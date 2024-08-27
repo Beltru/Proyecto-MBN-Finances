@@ -3,8 +3,8 @@ const app = express();
 const port = 3000;
 
 // Importar los controladores
-import users from "./controllers/users.js";
-import movements from "./controllers/movements.js";
+import users from "./Controllers/users.js";
+import movements from "./Controllers/movements.js";
 
 // midleaqres
 app.use(express.json());
