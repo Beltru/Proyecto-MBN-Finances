@@ -6,4 +6,9 @@ Muchas Gracias A las siguientes perosnas por su apoyo en el desarrollo de esta A
 - Edipo Rey
 - Vigi
 
-y Un agradecimiento especial para Berto que me re carreo, graias Berto, saludos.
+y Un agradecimiento especial para Berto que me re ayudo, gracias Berto, saludos.
+
+(\_/)
+[°-°]
+(> <)
+

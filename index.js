@@ -1,34 +1,21 @@
 import express from "express";
+import PlatosRouter from "./routes/platos.router.js";
+import AuthRouter from "./routes/auth.router.js";
+import PedidosRouter from "./routes/pedidos.router.js";
+import cors from "cors";
+import "dotenv/config";
+
 const app = express();
-const port = 3000;
 
-// Importar los controladores
-import users from "./Controllers/users.js";
-import movements from "./Controllers/movements.js";
-
-// midleaqres
 app.use(express.json());
+app.use(cors());
 
-//
-app.get("/ ", (req, res) => (
-    res.send("Node JS api"))
+app.get("/", (_, res) => res.send("BurgerTIC API is running..."));
+
+app.use("/platos", PlatosRouter);
+app.use("/auth", AuthRouter);
+app.use("/pedidos", PedidosRouter);
+
+app.listen(process.env.PORT || 9000, () =>
+    console.log(`Server is running on port ${process.env.PORT || 9000}`)
 );
-
-// Rutas de usuarios
-app.get("/users", users.getUsers);
-app.get("/users/:id", users.getUser);
-app.post("/users", users.createUser);
-app.put("/users/:id", users.updateUser);
-app.delete("/users/:id", users.deleteUser);
-
-// Rutas de movimientos financieros
-app.get("/movements/:userId", movements.getMovements);
-app.get("/movements/:id", movements.getMovement);
-app.post("/movements", movements.createMovement);
-app.put("/movements/:id", movements.updateMovement);
-app.delete("/movements/:id", movements.deleteMovement);
-
-// 
-app.listen (port, () => {
-    console.log(`Api is listening at http://localhost: ${port}`);
-});
