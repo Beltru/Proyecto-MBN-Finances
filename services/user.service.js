@@ -1,29 +1,59 @@
-import { client } from "../db.js";
+import { config } from "../db.js";
+import pkg from "pg";
+const { Client } = pkg;
 
-const getUsers = async () => {
-    return await client.query("SELECT * FROM usuarios");
+const getUsuarioByEmail = async (email) => {
+    const client = new Client(config);
+    await client.connect();
+
+    try {
+        const { rows } = await client.query(
+            "SELECT * FROM usuarios WHERE email = $1",
+            [email]
+        );
+        if (rows.length < 1) return null;
+
+        await client.end();
+        return rows[0];
+    } catch (error) {
+        await client.end();
+        throw error;
+    }
 };
 
-const getUser = async (id) => {
-    return await client.query("SELECT * FROM usuarios WHERE id_usuario = $1", [id]);
+const getUsuarioById = async (id) => {
+    const client = new Client(config);
+    await client.connect();
+    try {
+        const { rows } = await client.query(
+            "SELECT * FROM usuarios WHERE id = $1",
+            [id]
+        );
+        if (rows.length < 1) return null;
+        await client.end();
+        return rows[0];
+    } catch (error) {
+        await client.end();
+        throw error;
+    }
 };
 
-const createUser = async (nombre, correo, contraseña) => {
-    await client.query("INSERT INTO usuarios (nombre, correo, contraseña) VALUES ($1, $2, $3)", [nombre, correo, contraseña]);
+const createUsuario = async (usuario) => {
+    const client = new Client(config);
+    await client.connect();
+
+    try {
+        const { rows } = await client.query(
+            "INSERT INTO usuarios (nombre, apellido, email, password, admin) VALUES ($1, $2, $3, $4, false)",
+            [usuario.nombre, usuario.apellido, usuario.email, usuario.password]
+        );
+
+        await client.end();
+        return rows;
+    } catch (error) {
+        await client.end();
+        throw error;
+    }
 };
 
-const updateUser = async (id, nombre, correo) => {
-    await client.query("UPDATE usuarios SET nombre = $1, correo = $2 WHERE id_usuario = $3", [nombre, correo, id]);
-};
-
-const deleteUser = async (id) => {
-    await client.query("DELETE FROM usuarios WHERE id_usuario = $1", [id]);
-};
-
-export default {
-    getUsers,
-    getUser,
-    createUser,
-    updateUser,
-    deleteUser,
-};
+export default { getUsuarioByEmail, getUsuarioById, createUsuario };

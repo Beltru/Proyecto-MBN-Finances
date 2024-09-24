@@ -1,21 +1,22 @@
-import express from "express";
-import PlatosRouter from "./routes/platos.router.js";
-import AuthRouter from "./routes/auth.router.js";
-import PedidosRouter from "./routes/pedidos.router.js";
+import express from "express"; //Express
+
+import MovementsRouter from "./routes/movemnets.router.js"; //Router Movimientos Financieros
+import AuthRouter from "./routes/auth.router.js"; //Router de Registro
+
 import cors from "cors";
 import "dotenv/config";
 
+const port = 9000; //Declara el Puerto 9000
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (_, res) => res.send("BurgerTIC API is running..."));
+app.get("/ ", (req, res) => ( res.send("Node JS api")));
 
-app.use("/platos", PlatosRouter);
+app.use("/movements", MovementsRouter);
 app.use("/auth", AuthRouter);
-app.use("/pedidos", PedidosRouter);
 
-app.listen(process.env.PORT || 9000, () =>
-    console.log(`Server is running on port ${process.env.PORT || 9000}`)
-);
+app.listen (port, () => {
+    console.log(`Api is listening at http://localhost: ${port}`);
+});
