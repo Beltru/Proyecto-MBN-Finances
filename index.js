@@ -1,6 +1,6 @@
 import express from "express"; //Express
 
-import MovementsRouter from "./routes/movemnets.router.js"; //Router Movimientos Financieros
+import MovementsRouter from "./routes/movements.router.js"; //Router Movimientos Financieros
 import AuthRouter from "./routes/auth.router.js"; //Router de Registro
 
 import cors from "cors";

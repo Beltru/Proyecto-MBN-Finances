@@ -1,4 +1,4 @@
-import movementService from "../services/movement.service.js";
+import movementService from "../services/movements.service.js";
 
 const getMovements = async (req, res) => {
     const userId = req.params.userId;
