@@ -18,7 +18,25 @@ const getMovements = async (userId) => {
     } 
 };
 
-const getMovement = async (id) => {
+const getMovementsByUser = async (userId) => {
+    const client = new Client(config);
+    await client.connect();
+
+    try{
+        const { rows } = await client.query(
+            "SELECT * FROM movimientos_financieros WHERE id_usuario = $1", 
+            [userId]
+        );    
+
+        await client.end();
+        return rows[0];
+    } catch(error) {
+        await client.end();
+        throw error;
+    }
+};
+
+const getMovementById = async (id) => {
     const client = new Client(config);
     await client.connect();
 
@@ -105,7 +123,8 @@ const deleteMovement = async (id) => {
 
 export default {
     getMovements,
-    getMovement,
+    getMovementsByUser,
+    getMovementById,
     uploadMovements,
     createMovement,
     updateMovement,

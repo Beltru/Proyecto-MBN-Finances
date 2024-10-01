@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const password = req.body.password;
     const email = req.body.email;
     const saltRounds = 10;
-
+    
     if (!usuario)
         return res.status(400).json({ message: "Se requiere un usuario." });
 
