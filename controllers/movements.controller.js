@@ -54,6 +54,21 @@ const uploadMovements = async (req, res) => {
 const createMovement = async (req, res) => {
     const { userId, fecha, categoria, monto, descripcion } = req.body;
 
+    if (!userId){
+        return res.status(400).json({message: "Se necesita un userId"}); }
+
+    if (!fecha){
+        return res.status(400).json({message: "Se necesita fecha"}); }
+    
+    if (!categoria){
+        return res.status(400).json({message: "Se necesita una categoria"}); }
+
+    if (!monto){
+        return res.status(400).json({message: "Se necesita un monto"}); }
+
+    if (!descripcion){
+        return res.status(400).json({message: "Se necesita una descripcion"}); }
+
     try{
         await movementService.createMovement(userId, fecha, categoria, monto, descripcion);
         res.status(200).json({message: "Movimiento creado correctamente."});
@@ -65,7 +80,25 @@ const createMovement = async (req, res) => {
 const updateMovement = async (req, res) => {
     const id = req.params.id;
     const { fecha, categoria, monto, descripcion } = req.body;
+
+    if (!id){
+        return res.status(400).json({message: "Se necesita el id del movmiento financiero"}); }
+
+    if (!userId){
+        return res.status(400).json({message: "Se necesita un userId"}); }
+
+    if (!fecha){
+        return res.status(400).json({message: "Se necesita fecha"}); }
     
+    if (!categoria){
+        return res.status(400).json({message: "Se necesita una categoria"}); }
+
+    if (!monto){
+        return res.status(400).json({message: "Se necesita un monto"}); }
+
+    if (!descripcion){
+        return res.status(400).json({message: "Se necesita una descripcion"}); }
+
     try{
         await movementService.updateMovement(id, fecha, categoria, monto, descripcion);
         res.status(200).json({message: "Movimiento actualizado correctamente."});
@@ -77,6 +110,9 @@ const updateMovement = async (req, res) => {
 const deleteMovement = async (req, res) => {
     const id = req.params.id;
 
+    if (!id){
+        return res.status(400).json({message: "Se necesita el id del movmiento financiero"}); }
+    
     try{
         await movementService.deleteMovement(id);
         res.status(200).json({message: "Movimiento eliminado correctamente."});
