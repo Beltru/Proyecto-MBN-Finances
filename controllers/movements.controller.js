@@ -18,7 +18,7 @@ const getMovements = async (req, res) => {
 
 //Devuelve un movimiento financiero atravez del id del movimiento financiero.
 const getMovement = async (req, res) => {
-    const id = req.params.id;
+    const Movemnetid = req.params.id;
 
     if (!id) {
         return res.status(400).json({message: "Se requiere id del movimiento financiero"}); }

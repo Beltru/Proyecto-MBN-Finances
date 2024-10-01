@@ -1,6 +1,6 @@
-import { client } from "../db.js";
-//import pkg from "pg";
-//const { Client } = pkg;
+import { config } from "../db.js";
+import pkg from "pg";
+const { Client } = pkg;
 
 
 const getMovements = async (userId) => {

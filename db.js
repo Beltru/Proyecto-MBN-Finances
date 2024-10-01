@@ -1,6 +1,6 @@
 import "dotenv/config";
-import pkg from 'pg';
-const { Client } = pkg;
+//import pkg from 'pg';
+//const { Client } = pkg;
 
 // Configuración del cliente
 export const config = {
@@ -15,6 +15,8 @@ export const config = {
 };
 
 // Crear una nueva instancia de Client con la configuración
+/*
+
 export const client = new Client(config);
 
 // Conexión a la base de datos
@@ -24,4 +26,6 @@ client.connect()
     })
     .catch(err => {
         console.error("Error de conexión a la base de datos", err.stack);
-    });
+    }); 
+    
+*/
