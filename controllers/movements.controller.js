@@ -82,7 +82,7 @@ const createMovement = async (req, res) => {
 };
 
 const uploadMovements = async (req, res) => {
-const userId = req.id;
+    const userId = req.id;
 
     if (!req.file) {
         return res.status(400).json({ message: "No se ha subido ningún archivo." });
@@ -90,33 +90,39 @@ const userId = req.id;
 
     try {
         // Leer el archivo desde el buffer (memoria)
-        const workbook = xlsx.read(req.file.buffer, { type: 'buffer' }); // Leer el archivo Excel desde el buffer cargado en req.file
+        const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
         const sheetName = workbook.SheetNames[0]; // Obtener el nombre de la primera hoja del libro de Excel
         const sheet = workbook.Sheets[sheetName]; // Acceder a los datos de la primera hoja usando su nombre
-        const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 });  // 'header: 1' devuelve un array de arrays (filas y columnas)
         
-        const excelData = xlsx.utils.sheet_to_json(sheet); // Convertir los datos a JSON
+        const excelData = xlsx.utils.sheet_to_json(sheet, { header: 1 }); // Convertir los datos a JSON (array de arrays)
         
         if (!excelData || excelData.length === 0) {
             return res.status(400).json({ message: "El archivo Excel no contiene datos válidos." });
         }
 
-        const results = [];
+        const results = []; // Inicializar array para acumular los resultados
 
-        for (let i = 0; i <= row; i++) {
-            await movementService.createMovement(userId, fecha, categoria, monto, descripcion);
-        }
+        // Iterar sobre las filas (comenzando desde la segunda fila para evitar los encabezados)
+        for (let i = 1; i < excelData.length; i++) {
+            const row = excelData[i];
+            
+            // Extraer los valores de cada columna
+            const fecha = row[0];       // Columna 1: Fecha
+            const descripcion = row[1]; // Columna 2: Descripción
+            const cuota = row[2];       // Columna 3: Cuota
+            const monto = row[3];       // Columna 4: Monto
 
-        for (const row of excelData) {
+            // Crear el objeto con los datos del movimiento
             const movementData = {
-                userId, // Asignar el userId
-                ...row // Combinar con los datos de la fila
+                fecha,
+                categoria, 
+                monto, 
+                descripcion,
             };
 
             // Llamar a la función createMovement del controlador de movimientos
             const response = await MovementsController.createMovement({ body: movementData, id: userId });
-
-            results.push(response);
+            results.push(response); // Agregar la respuesta al array de resultados
         }
 
         res.status(200).json({ message: 'Movimientos creados con éxito', results });

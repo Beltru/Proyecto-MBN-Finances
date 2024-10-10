@@ -4,7 +4,6 @@ GET http://localhost:9000/ HTTP/1.1
 ###
 GET http://localhost:9000/usuarios/columns HTTP/1.1
 
-
 ###AUTH
 
 ###REGISTER
@@ -38,6 +37,11 @@ GET http://localhost:9000/movements/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Nzg1MDg2LCJleHAiOjE3Mjc3ODY4ODZ9.-QgPyDVfBMaTe3i2u6_EAI6mrPjbbOCilx6gTi-MNtU
 
 
-###GETMOVEMENT
-GET http://localhost:9000/movements/1 HTTP/1.1
+
+###UPLOADMOVEMENT
+
+POST http://localhost:9000/movements/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Nzg1MDg2LCJleHAiOjE3Mjc3ODY4ODZ9.-QgPyDVfBMaTe3i2u6_EAI6mrPjbbOCilx6gTi-MNtU
+Content-Type: multipart/form-data
+
+file=@C:\Users\48673823\Downloads\nombre_del_archivo.xlsx
