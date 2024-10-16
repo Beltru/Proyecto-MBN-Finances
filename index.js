@@ -20,3 +20,4 @@ app.use("/auth", AuthRouter);
 app.listen (port, () => {
     console.log(`Api is listening at http://localhost: ${port}`);
 });
+

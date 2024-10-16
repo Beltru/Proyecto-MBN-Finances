@@ -8,3 +8,4 @@ router.post("/register", AuthController.register); //Registro
 router.post("/login", AuthController.login); //Login
 
 export default router;
+
