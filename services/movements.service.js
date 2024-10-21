@@ -107,13 +107,14 @@ const deleteMovement = async (id) => {
     await client.connect();
     
     try{
-        const [rows] = await client.query(
+        const result = await client.query(
             "DELETE FROM movimientos_financieros WHERE id_movimiento = $1", 
             [id]
         );
 
         await client.end();
-        return rows;
+        //console.log(rows);
+        return result.rowCount;
     } catch(error) {
         await client.end();
         throw error;

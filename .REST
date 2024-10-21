@@ -26,12 +26,11 @@ Content-Type: application/json
 
 ###GETALLMOVEMENTS
 GET http://localhost:9000/movements HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTEwMjQ0LCJleHAiOjE3Mjk1MTIwNDR9.e-EXRhfq_g1BVql6khNT4ijQ1Sm3lXROcavg909TCYU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 ###GETMOVEMENTSBYUSER
 GET http://localhost:9000/movements/user/3 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTA5Mjk5LCJleHAiOjE3Mjk1MTEwOTl9.t7g1nL1lhR-F2F2t-1fCDjmRUXf59eWWTPgPWqfqppQ
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 ###GETMOVEMENTSBYID
 GET http://localhost:9000/movements/movement/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTEwMjQ0LCJleHAiOjE3Mjk1MTIwNDR9.e-EXRhfq_g1BVql6khNT4ijQ1Sm3lXROcavg909TCYU
@@ -39,7 +38,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxN
 ###CREATEMOVEMENT
 POST http://localhost:9000/movements/create/3 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTEyMjI4LCJleHAiOjE3Mjk1MTQwMjh9.rk_XFSehjjWCJd0Tmzmp2ZomHMO2wWaMVK73TnnqJhE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 {
     "fecha": "2021-2-17", 
@@ -49,9 +48,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxN
 }
 
 ###UPDATEMOVEMENTBYMOVEMENTID
-PUT http://localhost:9000/movements/update/1 HTTP/1.1
+PUT http://localhost:9000/movements/update/6 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTEwNjA3LCJleHAiOjE3Mjk1MTI0MDd9._zDgpHQfhL-c5TsGCEToZNll3GAC3449txIKgCzxZPM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 {
     "fecha": "2021-2-17", 
@@ -61,9 +60,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxN
 }
 
 ###DELETEMOVEMENTBYMOVEMENTID
-DELETE http://localhost:9000/movements/delete/3 HTTP/1.1
+DELETE http://localhost:9000/movements/delete/8 HTTP/1.1
 //Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTEwNjA3LCJleHAiOjE3Mjk1MTI0MDd9._zDgpHQfhL-c5TsGCEToZNll3GAC3449txIKgCzxZPM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 ###UPLOADMOVEMENT
 POST http://localhost:9000/movements/1

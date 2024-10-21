@@ -161,11 +161,11 @@ const updateMovement = async (req, res) => {
         return res.status(400).json({message: "Se necesita una descripcion"}); }
 
     try{
-        //const movement = await movementService.getMovementById(id);
+        const movement = await movementService.getMovementById(id);
 
-        //if (!movement) {
-        //    return res.status(404).json({ message: "movement no encontrado" }); 
-        //}
+        if (!movement) {
+            return res.status(404).json({ message: "movement no encontrado" }); 
+        }
 
     await movementService.updateMovement(id, fecha, categoria, monto, descripcion);
 
@@ -188,7 +188,7 @@ const deleteMovement = async (req, res) => {
             return res.status(404).json({ message: "movement no encontrado" }); 
         }
 
-        await movementService.deleteMovement(id);
+        const deletedRows = await movementService.deleteMovement(id);
         
         res.status(200).json({message: "Movimiento eliminado correctamente."});
     } catch(error){
