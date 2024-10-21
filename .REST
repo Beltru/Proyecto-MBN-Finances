@@ -65,8 +65,8 @@ DELETE http://localhost:9000/movements/delete/8 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 ###UPLOADMOVEMENT
-POST http://localhost:9000/movements/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Nzg1MDg2LCJleHAiOjE3Mjc3ODY4ODZ9.-QgPyDVfBMaTe3i2u6_EAI6mrPjbbOCilx6gTi-MNtU
+POST http://localhost:9000/movements//upload/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTI5MTQwLCJleHAiOjE3Mjk1MzA5NDB9.5zp4gKkfGHILF6VmoB4ADdDuaVgfOC-77H_1opVRhOE
 Content-Type: multipart/form-data
 
-file=@C:\Users\48673823\Downloads\nombre_del_archivo.xlsx
+file=@C:\Users\48673823\Downloads\Excel.xlsx

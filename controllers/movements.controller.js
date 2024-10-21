@@ -133,7 +133,7 @@ const uploadMovements = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 const updateMovement = async (req, res) => {
     const id = req.params.id;
