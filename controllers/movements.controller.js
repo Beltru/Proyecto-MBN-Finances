@@ -48,8 +48,8 @@ const getMovementById = async (req, res) => {
     try{
         const rows = await movementService.getMovementById(id);
         if (!rows){
-            return res.status(404).json({message: "Movimiento no encontrado"});}
-
+            return res.status(404).json({message: "Movimiento no encontrado"});
+        }
         res.status(200).json({rows});
     } catch(error) {
         res.status(500).json({message: error.message});
@@ -142,9 +142,6 @@ const updateMovement = async (req, res) => {
     if (!id){
         return res.status(400).json({message: "Se necesita el id del movmiento financiero"}); }
 
-    if (!userId){
-        return res.status(400).json({message: "Se necesita un userId"}); }
-
     if (!fecha){
         return res.status(400).json({message: "Se necesita fecha"}); }
     
@@ -164,13 +161,13 @@ const updateMovement = async (req, res) => {
         return res.status(400).json({message: "Se necesita una descripcion"}); }
 
     try{
-        const movement = await movementService.getMovementById(id);
+        //const movement = await movementService.getMovementById(id);
 
-        if (!movement) {
-            return res.status(404).json({ message: "movement no encontrado" }); 
-        }
+        //if (!movement) {
+        //    return res.status(404).json({ message: "movement no encontrado" }); 
+        //}
 
-        await movementService.updateMovement(id, fecha, categoria, monto, descripcion);
+    await movementService.updateMovement(id, fecha, categoria, monto, descripcion);
 
         res.status(200).json({message: "Movimiento actualizado correctamente."});
     } catch(error){
