@@ -9,15 +9,18 @@ const getMovements = async (req, res) => {
         return res.status(400).json({message: "Se requiere userId."}); }
 
     try{
-        const result = await movementService.getMovements(userId);
-        res.status(200).json(result.rows);
+        const rows = await movementService.getMovements(userId)
+        if(!rows){
+            return res.status(404).json({message: "Movimientos no encontrados"});
+        }
+        res.status(200).json({rows});
     } catch (error){
         res.status(500).json({message: error.message});
     }  
 };
 
 
-//Devuelve un movimiento financiero atravez del id del movimiento financiero.
+//Devuelve todos los movimientos financieros de un usuario
 const getMovementsByUser = async (req, res) => {
     const userId = req.id;
 
@@ -25,11 +28,11 @@ const getMovementsByUser = async (req, res) => {
         return res.status(400).json({message: "Se requiere userId"}); }
 
     try{
-        const result = await movementService.getMovementByUser(userId);
-        if (!result){
-            return res.status(404).json({message: "Movimiento no encontrado"});}
-
-        res.status(200).json(result.rows);
+        const rows = await movementService.getMovementsByUser(userId);
+        if (!rows){
+            return res.status(404).json({message: "Movimientos no encontrados"});
+        }
+        res.status(200).json({rows});
     } catch(error) {
         res.status(500).json({message: error.message});
     }
@@ -43,11 +46,11 @@ const getMovementById = async (req, res) => {
         return res.status(400).json({message: "Se requiere id del movimiento financiero"}); }
 
     try{
-        const result = await movementService.getMovementById(id);
-        if (!result){
+        const rows = await movementService.getMovementById(id);
+        if (!rows){
             return res.status(404).json({message: "Movimiento no encontrado"});}
 
-        res.status(200).json(result.rows);
+        res.status(200).json({rows});
     } catch(error) {
         res.status(500).json({message: error.message});
     }

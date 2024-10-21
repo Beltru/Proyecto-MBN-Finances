@@ -4,13 +4,14 @@ import { verifyAdmin, verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-//Router de Movimientos Financieros
-router.get("/:userId", verifyToken, MovementsController.getMovements); //Get todos los Movimientos por Id de Usuario
-router.get("/:id", verifyToken, MovementsController.getMovementById); //Get Movimiento por ID
-router.get("/:userId", verifyToken, MovementsController.getMovementsByUser); //Get Movimiento por UserId
-router.post("/:userId", verifyToken, MovementsController.uploadMovements); //Crear Movimiento por ID
-router.post("/create/:userId", verifyToken, MovementsController.createMovement); //Crear Movimiento por ID
-router.put("/:id", verifyToken, MovementsController.updateMovement); //Actualizar Movimiento por ID
-router.delete("/:id", verifyToken, MovementsController.deleteMovement); //Borrar Movimiento por ID
+// Router de Movimientos Financieros
+router.get("/", verifyToken, verifyAdmin, MovementsController.getMovements) //Devuelve todos los movimientos financieros
+router.get("/user/:userId", verifyToken, MovementsController.getMovementsByUser); // Obtener todos los Movimientos por userId
+router.get("/movement/:id", verifyToken, MovementsController.getMovementById); // Obtener Movimiento por ID
+router.get("/all/:userId", verifyToken, MovementsController.getMovements); // Obtener Movimiento por userId
+router.post("/upload/:userId", verifyToken, MovementsController.uploadMovements); // Subir Movimiento por userId
+router.post("/create/:userId", verifyToken, MovementsController.createMovement); // Crear Movimiento por userId
+router.put("/update/:id", verifyToken, MovementsController.updateMovement); // Actualizar Movimiento por ID
+router.delete("/delete/:id", verifyToken, MovementsController.deleteMovement); // Borrar Movimiento por ID
 
 export default router;

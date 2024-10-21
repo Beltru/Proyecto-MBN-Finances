@@ -27,9 +27,8 @@ const getMovementsByUser = async (userId) => {
             "SELECT * FROM movimientos_financieros WHERE id_usuario = $1", 
             [userId]
         );    
-
         await client.end();
-        return rows[0];
+        return rows;
     } catch(error) {
         await client.end();
         throw error;
