@@ -65,7 +65,7 @@ DELETE http://localhost:9000/movements/delete/8 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTE2NjM3LCJleHAiOjE3Mjk1MTg0Mzd9.5i3GsNb7cAIgsxq3v-yMr8kBT_W9qnvf1KTb7Bsk2tU
 
 ###UPLOADMOVEMENT
-POST http://localhost:9000/movements//upload/3
+POST http://localhost:9000/movements/upload/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzI5NTI5MTQwLCJleHAiOjE3Mjk1MzA5NDB9.5zp4gKkfGHILF6VmoB4ADdDuaVgfOC-77H_1opVRhOE
 Content-Type: multipart/form-data
 

@@ -4,6 +4,8 @@ import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+console.log(upload);
+
 // Middleware para manejar la subida de un solo archivo con el campo 'file'
 export const uploadFile = async (req, res, next) => {
     try {
