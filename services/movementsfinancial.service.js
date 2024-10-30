@@ -9,12 +9,12 @@ const getTotalBalance = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE -monto END) AS saldo_total FROM movimientos_financieros WHERE id_usuario = $1",
+            "SELECT SUM(monto) FROM movimientos_financieros WHERE id_usuario = $1;",
             [userId]
         );
 
         await client.end();
-        return rows[0].saldo_total;
+        return rows[0];
     } catch (error) {
         await client.end();
         throw error;
@@ -27,7 +27,7 @@ const getMonthlyIncomes = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'ingreso' GROUP BY mes ORDER BY mes",
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY mes ORDER BY mes;",
             [userId]
         );
 
@@ -45,7 +45,7 @@ const getMonthlyExpenses = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'egreso' GROUP BY mes ORDER BY mes",
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY mes ORDER BY mes;",
             [userId]
         );
 
@@ -63,8 +63,8 @@ const getMonthlyBalance = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE -monto END) AS saldo_mensual FROM movimientos_financieros WHERE id_usuario = $1 GROUP BY mes ORDER BY mes",
-            [userId]
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE -monto END) AS saldo_mensual FROM movimientos_financieros WHERE id_usuario = $1 GROUP BY mes ORDER BY mes;"            
+    [userId]
         );
 
         await client.end();

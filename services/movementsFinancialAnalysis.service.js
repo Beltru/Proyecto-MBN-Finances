@@ -1,5 +1,6 @@
-import { Client } from 'pg';
-import config from '../config';
+import { config } from "../db.js";
+import pkg from "pg";
+const { Client } = pkg;
 
 // Obtener ingresos por un día específico
 const getIncomesByDate = async (userId, date) => {
