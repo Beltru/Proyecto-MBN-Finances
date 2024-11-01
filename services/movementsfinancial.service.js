@@ -63,8 +63,8 @@ const getMonthlyBalance = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE -monto END) AS saldo_mensual FROM movimientos_financieros WHERE id_usuario = $1 GROUP BY mes ORDER BY mes;"            
-    [userId]
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(CASE WHEN monto > 0 THEN monto ELSE -monto END) AS saldo_mensual FROM movimientos_financieros WHERE id_usuario = $1 GROUP BY mes ORDER BY mes;",
+            [userId]
         );
 
         await client.end();
