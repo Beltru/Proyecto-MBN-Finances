@@ -81,7 +81,7 @@ const getDailyIncomes = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE(fecha) AS dia, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'ingreso' GROUP BY dia ORDER BY dia",
+            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY dia ORDER BY dia;",
             [userId]
         );
 
@@ -99,7 +99,7 @@ const getDailyExpenses = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE(fecha) AS dia, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'egreso' GROUP BY dia ORDER BY dia",
+            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY dia ORDER BY dia;",
             [userId]
         );
 
@@ -117,8 +117,9 @@ const getDailyBalance = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE(fecha) AS dia, SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE -monto END) OVER (ORDER BY fecha) AS saldo_diario FROM movimientos_financieros WHERE id_usuario = $1 ORDER BY dia",
+            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(CASE WHEN monto > 0 THEN monto ELSE -monto END) OVER (ORDER BY DATE_TRUNC('day', fecha)) AS saldo_diario FROM movimientos_financieros WHERE id_usuario = $1 ORDER BY dia;",
             [userId]
+
         );
 
         await client.end();
