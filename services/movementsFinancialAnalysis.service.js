@@ -6,10 +6,10 @@ const { Client } = pkg;
 const getIncomesByDate = async (userId, date) => {
     const client = new Client(config);
     await client.connect();
-
+    //console.log(date);
     try {
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'ingreso' AND DATE(fecha) = $2",
+            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 AND DATE(fecha) = $2;",            
             [userId, date]
         );
 
@@ -28,7 +28,7 @@ const getExpensesByDate = async (userId, date) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND tipo = 'egreso' AND DATE(fecha) = $2",
+            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 AND DATE(fecha) = $2;",            
             [userId, date]
         );
 

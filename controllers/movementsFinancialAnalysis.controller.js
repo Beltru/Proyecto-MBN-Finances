@@ -1,12 +1,28 @@
 import MovementsFinancialAnalysisService from '../services/movementsFinancialAnalysis.service.js';
 
 const getIncomesByDate = async (req, res) => {
-    const { userId } = req.params;
-    const { date } = req.query; // Se asume que la fecha se pasa como parámetro de consulta
+    const userId = req.id;
+    const date = req.query.date; // Se asume que la fecha se pasa como parámetro de consulta
+
+    console.log(userId);
+    console.log(date);
+    
+    if (!userId) {
+        return res.status(400).json({ message: "Se requiere userId" });
+    }
+
+    if (!date){
+        return res.status(400).json({ message: "Se requiere un date "});
+    }
+
+    if (isNaN(Date.parse(date)))
+    {
+        return res.status(400).json({ message: "Se requiere que tenga el formato adecuado"});
+    }
 
     try {
-        const totalIncomes = await MovementsFinancialAnalysisService.getIncomesByDate(userId, date);
-        res.json({ totalIncomes });
+        const DayIncomes = await MovementsFinancialAnalysisService.getIncomesByDate(userId, date);
+        res.status(200).json({ DayIncomes });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los ingresos por fecha', error });
     }
