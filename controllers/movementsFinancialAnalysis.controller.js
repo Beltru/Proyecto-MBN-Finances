@@ -33,8 +33,8 @@ const getExpensesByDate = async (req, res) => {
     const { date } = req.query;
 
     try {
-        const totalExpenses = await MovementsFinancialAnalysisService.getExpensesByDate(userId, date);
-        res.json({ totalExpenses });
+        const DayExpenses = await MovementsFinancialAnalysisService.getExpensesByDate(userId, date);
+        res.json({ DayExpenses });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los egresos por fecha', error });
     }
@@ -45,8 +45,8 @@ const getBalanceByDate = async (req, res) => {
     const { date } = req.query;
 
     try {
-        const balance = await MovementsFinancialAnalysisService.getBalanceByDate(userId, date);
-        res.json({ balance });
+        const DayBalance = await MovementsFinancialAnalysisService.getBalanceByDate(userId, date);
+        res.json({ DayBalance });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener el saldo por fecha', error });
     }
@@ -57,8 +57,8 @@ const getIncomesByMonth = async (req, res) => {
     const { month } = req.query; // Se asume que el mes se pasa como parámetro de consulta
 
     try {
-        const totalIncomes = await MovementsFinancialAnalysisService.getIncomesByMonth(userId, month);
-        res.json({ totalIncomes });
+        const MonthIncomes = await MovementsFinancialAnalysisService.getIncomesByMonth(userId, month);
+        res.json({ MonthIncomes });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los ingresos por mes', error });
     }
@@ -69,8 +69,8 @@ const getExpensesByMonth = async (req, res) => {
     const { month } = req.query;
 
     try {
-        const totalExpenses = await MovementsFinancialAnalysisService.getExpensesByMonth(userId, month);
-        res.json({ totalExpenses });
+        const MonthExpenses = await MovementsFinancialAnalysisService.getExpensesByMonth(userId, month);
+        res.json({ MonthExpenses });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener los egresos por mes', error });
     }
@@ -81,8 +81,8 @@ const getBalanceByMonth = async (req, res) => {
     const { month } = req.query;
 
     try {
-        const balance = await MovementsFinancialAnalysisService.getBalanceByMonth(userId, month);
-        res.json({ balance });
+        const MonthBalance = await MovementsFinancialAnalysisService.getBalanceByMonth(userId, month);
+        res.json({ MonthBalance });
     } catch (error) {
         res.status(500).json({ message: 'Error al obtener el saldo por mes', error });
     }

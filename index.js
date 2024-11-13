@@ -4,6 +4,7 @@ import MovementsRouter from "./routes/movements.router.js"; //Router Movimientos
 import MovementsfinancialRouter from "./routes/movementsfinancial.router.js"; //Router Movimientos Financierosc
 import MovementsfinancialanalysisRouter from "./routes/movementsFinancialAnalysis.router.js"; //Router Movimientos Financierosc
 import AuthRouter from "./routes/auth.router.js"; //Router de Registro
+import AuthRecomendations from "./routes/recomendations.router.js"; //Router de Registro
 
 import cors from "cors";
 import "dotenv/config";
@@ -20,6 +21,7 @@ app.use("/movements", MovementsRouter);
 app.use("/movementsfinancial", MovementsfinancialRouter);
 app.use("/movementsfinancialAnalysis", MovementsfinancialanalysisRouter);
 app.use("/auth", AuthRouter);
+app.use("/recomendations", AuthRecomendations);
 
 app.listen (port, () => {
     console.log(`Api is listening at http://localhost: ${port}`);
