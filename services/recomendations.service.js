@@ -8,45 +8,70 @@ const MakeRecomendationsComparation = async (userId) => {
 
     const categorias = ['Comida', 'Transporte', 'Educacion', 'Entretenimiento']; // Categorías
 
-    const BudgetRecomendations = [
-        "Alquiler": 0.30,        // 30% del salario
-        "Alimentación": 0.15,    // 15% del salario
-        "Transporte": 0.10,      // 10% del salario
-        "Ahorro": 0.10,          // 10% del salario
-        "Entretenimiento": 0.05, // 5% del salario
-        "Ropa": 0.05             // 5% del salario
-    ];
+    const BudgetRecomendations = {
+        "Comida": 0.30,          // 30% del salario
+        "Transporte": 0.30,      // 30% del salario
+        "Educacion": 0.20,       // 20% del salario
+        "Entretenimiento": 0.20, // 20% del salario
+    };
 
-    for (let categoria of categorias) {
-        try 
-        { 
+    MonthSalaryJson = await client.query(
+        `SELECT SUM(monto) AS salario
+        FROM movimientos_financieros
+        WHERE userId = $1
+            AND monto < 0
+            AND DATE_PART('month', fecha) = DATE_PART('month', CURRENT_DATE)
+            AND DATE_PART('year', fecha) = DATE_PART('year', CURRENT_DATE)`,
+        [userId]
+    );
+    
+    MonthSalary = MonthSalaryJson.rows[0].salario;
 
+    const recomendations = [];
+    try 
+    { 
+        for (let categoria of categorias) {
+        
+            CategoryExpensesJson = await client.query(
+                `SELECT SUM(monto) AS gasto
+                FROM movimientos_financieros
+                WHERE userId = $1
+                    AND monto < 0
+                    AND categoria = $2
+                    AND DATE_PART('month', fecha) = DATE_PART('month', CURRENT_DATE)
+                    AND DATE_PART('year', fecha) = DATE_PART('year', CURRENT_DATE)`,
+                [userId, categoria] 
+            );
 
-            let CategoryBudget = Salary % CategoryPercent[categoria];
+            CategoryExpenses = CategoryExpensesJson.rows[0].gasto;
+
+            let CategoryBudget = MonthSalary * BudgetRecomendations[categoria];
 
             if (CategoryExpenses > CategoryBudget) 
             {
-                recomendations.push(`Has excedido tu presupuesto en ${categoria}. Gasto actual: $${gastoActual}, Presupuesto: $${presupuesto}. Considera reducir los gastos en esta categoría.`);
+                recomendations.push(`Has excedido tu presupuesto en ${categoria}. Gasto actual: $${CategoryExpenses}, Presupuesto: $${CategoryBudget}. Considera reducir los gastos en esta categoría.`);
             } 
-            else if (gastoActual === 0) 
+            else if (CategoryExpenses === 0) 
             {
-                recomendaciones.push(`No has registrado gastos en ${categoria} este mes. ¡Es un buen momento para ahorrar o redistribuir tu presupuesto!`);
+                recomendations.push(`No has registrado gastos en ${categoria} este mes. ¡Es un buen momento para ahorrar o redistribuir tu presupuesto!`);
             } 
             else 
             {
-                recomendaciones.push(`Tu gasto en ${categoria} está dentro del presupuesto. Gasto actual: $${gastoActual}, Presupuesto: $${presupuesto}. Sigue así.`);
+                recomendations.push(`Tu gasto en ${categoria} está dentro del presupuesto. Gasto actual: $${CategoryExpenses}, Presupuesto: $${CategoryBudget}. Sigue así.`);
             }    
         } 
-        catch (error) 
-        {
-            await client.end();
-            throw error;
-        }
-    }
 
-    await client.end();
-    return rows;
-    
+        return recomendations;
+
+    }   
+    catch (error) 
+    {
+        throw error;
+    } 
+    finally 
+    {
+        await client.end();
+    }
 };
 
 const MakeRecomendationsTendency = async (userId) => {
