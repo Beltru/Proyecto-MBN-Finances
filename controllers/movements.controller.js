@@ -69,7 +69,23 @@ const createMovement = async (req, res) => {
     
     if (!categoria){
         return res.status(400).json({message: "Se necesita una categoria"}); }
-
+    
+    const PosibleCategories = 
+    [
+        "Vivienda",
+        "Transporte",
+        "Alimentación",
+        "Salud y bienestar",
+        "Ropa y calzado",
+        "Educación",
+        "Entretenimiento",
+        "Tecnología"
+    ];
+    
+    if (!PosibleCategories.includes(categoria)) {
+        return res.status(400).json({message: "Se necesita Ingresar una categoria Valida"});
+    }
+    
     if (!monto){
         return res.status(400).json({message: "Se necesita un monto"}); }
 
@@ -86,52 +102,36 @@ const createMovement = async (req, res) => {
 
 const uploadMovements = async (req, res) => {
     const userId = req.id;
-
+    
     if (!req.file) {
-        return res.status(400).json({ message: "No se ha subido ningún archivo." });
+        return res.status(400).send('No se proporcionó ningún archivo CSV.');
     }
 
     try {
-        // Leer el archivo desde el buffer (memoria)
-        const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
-        const sheetName = workbook.SheetNames[0]; // Obtener el nombre de la primera hoja del libro de Excel
-        const sheet = workbook.Sheets[sheetName]; // Acceder a los datos de la primera hoja usando su nombre
-        
-        const excelData = xlsx.utils.sheet_to_json(sheet, { header: 1 }); // Convertir los datos a JSON (array de arrays)
-        
-        if (!excelData || excelData.length === 0) {
-            return res.status(400).json({ message: "El archivo Excel no contiene datos válidos." });
-        }
+        // Lee el archivo CSV desde la memoria
+        const csvData = req.file.buffer.toString('utf-8');
 
-        const results = []; // Inicializar array para acumular los resultados
+        // Divide el contenido en filas (cada línea del CSV)
+        const filas = csvData.split('\n');
 
-        // Iterar sobre las filas (comenzando desde la segunda fila para evitar los encabezados)
-        for (let i = 1; i < excelData.length; i++) {
-            const row = excelData[i];
-            
-            // Extraer los valores de cada columna
-            const fecha = row[0];       // Columna 1: Fecha
-            const descripcion = row[1]; // Columna 2: Descripción
-            const cuota = row[2];       // Columna 3: Cuota
-            const monto = row[3];       // Columna 4: Monto
+        // Recorre cada fila y muestra su contenido
+        filas.forEach((fila, index) => {
+            console.log(`Fila ${index + 1}: ${fila}`);
 
-            // Crear el objeto con los datos del movimiento
-            const movementData = {
-                fecha,
-                categoria, 
-                monto, 
-                descripcion,
-            };
+            // Dividir la fila en campos usando el delimitador ";"
+            const campos = fila.split(';');
 
-            // Llamar a la función createMovement del controlador de movimientos
-            const response = await MovementsController.createMovement({ body: movementData, id: userId });
-            results.push(response); // Agregar la respuesta al array de resultados
-        }
+            // console.log(`Fila ${index + 1}:`);
+            campos.forEach((campo, i) => {
+                console.log(`  Campo ${i + 1}: ${campo}`);
+            });            
+        });
 
-        res.status(200).json({ message: 'Movimientos creados con éxito', results });
-
+        // Envía una respuesta indicando que se recibió correctamente el archivo
+        res.status(200).send('Archivo CSV recibido correctamente');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).send('Hubo un problema al procesar el archivo CSV');
     }
 };
 

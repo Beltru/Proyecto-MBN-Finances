@@ -9,10 +9,14 @@ const MakeRecomendationsComparation = async (userId) => {
     const categorias = ['Comida', 'Transporte', 'Educacion', 'Entretenimiento']; // Categorías
 
     const BudgetRecomendations = {
-        "Comida": 0.30,          // 30% del salario
-        "Transporte": 0.30,      // 30% del salario
-        "Educacion": 0.20,       // 20% del salario
-        "Entretenimiento": 0.20, // 20% del salario
+        "Vivienda": 0.20,          // 20% del salario
+        "Transporte": 0.20,        // 20% del salario
+        "Alimentación": 0.10,      // 10% del salario
+        "Salud y bienestar": 0.10, // 10% del salario
+        "Ropa y calzado": 0.10,    // 10% del salario
+        "Educación": 0.10,         // 10% del salario
+        "Entretenimiento": 0.10,   // 10% del salario
+        "Tecnología": 0.10         // 10% del salario
     };
 
     MonthSalaryJson = await client.query(
