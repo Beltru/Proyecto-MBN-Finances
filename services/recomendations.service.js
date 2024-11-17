@@ -130,25 +130,21 @@ const MakeRecomendationsTendency = async (userId) => {
 
             let CategoryBudget = MonthSalary * BudgetRecomendations[categoria];            
             let Tolerance = CategoryBudget * 0.1 //Usa como tolerancia el 10 porciento de el presupuesto de la categoria
-            
+            let Tendency = "Irregular"
+
             if (diferencias.every(diference ))
             {
-                let Tendecy = "Estable"
+                Tendecy = "Estable"
                 recomendations.push("");
             } 
             else if () 
             {
-                let Tendency = "Aumento"
+                Tendency = "Aumento"
                 recomendations.push("");
             }
             else if ()
             {
-                let Tendency = "Disminucion"
-                recomendations.push("");
-            }
-            else 
-            {
-                let Tendency = "Irregular"
+                Tendency = "Disminucion"
                 recomendations.push("");
             }
         }
