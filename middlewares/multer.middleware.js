@@ -1,4 +1,4 @@
-const multer = require('multer');
+import multer from "multer";
 
 // Configuración de multer para almacenar el archivo temporalmente en la memoria
 const upload = multer({
@@ -13,4 +13,4 @@ const upload = multer({
     }
 });
 
-module.exports = upload;
+export default upload; // Exporta usando default
