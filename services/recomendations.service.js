@@ -31,7 +31,7 @@ const MakeRecomendationsComparations = async (userId) => {
         [userId]
     );
 
-    let MonthSalary = MonthSalaryJson.rows[0].salario;
+    let MonthSalary = MonthSalaryJson.rows[0].salario*-1;
 
     const recomendations = [];
 
@@ -39,16 +39,20 @@ const MakeRecomendationsComparations = async (userId) => {
     { 
         for (let categoria of categorias) {
         
+            console.log(categoria);
+
             let CategoryExpensesJson = await client.query(
                 `SELECT SUM(monto) AS gasto
                 FROM movimientos_financieros
                 WHERE id_usuario = $1
-                    AND monto < 0
+                    AND monto > 0
                     AND categoria = $2
                     AND DATE_PART('month', fecha) = DATE_PART('month', CURRENT_DATE)
                     AND DATE_PART('year', fecha) = DATE_PART('year', CURRENT_DATE)`,
                 [userId, categoria] 
             );
+
+            console.log(CategoryExpensesJson.rows[0]);
 
             //----------------------------------------------------------------------------------------------------------
 
@@ -56,7 +60,7 @@ const MakeRecomendationsComparations = async (userId) => {
                 `SELECT DATE_PART('month', fecha) AS month, SUM(monto) AS expense
                 FROM movimientos_financieros
                 WHERE id_usuario = $1
-                    AND monto < 0
+                    AND monto > 0
                     AND categoria = $2
                     AND fecha >= CURRENT_DATE - INTERVAL '3 months'
                 GROUP BY DATE_PART('month', fecha)
@@ -112,7 +116,7 @@ const MakeRecomendationsTendency = async (userId) => {
         `SELECT SUM(monto) AS salario
         FROM movimientos_financieros
         WHERE id_usuario = $1
-            AND monto < 0
+            AND monto > 0
             AND DATE_PART('month', fecha) = DATE_PART('month', CURRENT_DATE)
             AND DATE_PART('year', fecha) = DATE_PART('year', CURRENT_DATE)`,
         [userId]
@@ -127,7 +131,7 @@ const MakeRecomendationsTendency = async (userId) => {
                 `SELECT DATE_PART('month', fecha) AS month, SUM(monto) AS expense
                 FROM movimientos_financieros
                 WHERE id_usuario = $1
-                    AND monto < 0
+                    AND monto > 0
                     AND categoria = $2
                     AND fecha >= CURRENT_DATE - INTERVAL '3 months'
                 GROUP BY DATE_PART('month', fecha)
@@ -158,20 +162,20 @@ const MakeRecomendationsTendency = async (userId) => {
             } else if (Diferences.every(diff => diff < -Tolerance)) {
                 Tendency = "Disminución";
             }
-
+            
             // Generar recomendación basada en la tendencia
             switch (Tendency) {
                 case "Estable":
-                    recomendations.push(`Tus gastos en ${categoria} han sido estables en los últimos 3 meses. ¡Sigue así!`);
+                    recomendations.push(`Tus gastos en ${categoria} han sido estables en los últimos 3 meses. ¡Sigue así!. Hace 2 meses: ${expenses[0].expense}, Hace 1 meses: ${expenses[1].expense}, Este mes: ${expenses[2].expense}`);
                     break;
                 case "Aumento":
-                    recomendations.push(`Tus gastos en ${categoria} han mostrado un aumento constante. Considera ajustar tus gastos en esta categoría.`);
+                    recomendations.push(`Tus gastos en ${categoria} han mostrado un aumento constante. Considera ajustar tus gastos en esta categoría. Hace 2 meses: ${expenses[0].expense}, Hace 1 meses: ${expenses[1].expense}, Este mes: ${expenses[2].expense}`);
                     break;
                 case "Disminución":
-                    recomendations.push(`Tus gastos en ${categoria} han disminuido en los últimos meses. Es una oportunidad para ahorrar más.`);
+                    recomendations.push(`Tus gastos en ${categoria} han disminuido en los últimos meses. Es una oportunidad para ahorrar más. Hace 2 meses: ${expenses[0].expense}, Hace 1 meses: ${expenses[1].expense}, Este mes: ${expenses[2].expense}`);
                     break;
                 default:
-                    recomendations.push(`Tus gastos en ${categoria} muestran un comportamiento irregular. Revisa esta categoría para entender mejor tus patrones de gasto.`);
+                    recomendations.push(`Tus gastos en ${categoria} muestran un comportamiento irregular. Revisa esta categoría para entender mejor tus patrones de gasto. Hace 2 meses: ${expenses[0].expense}, Hace 1 meses: ${expenses[2].expense}, Este mes: ${expenses[2].expense}`);
             }
         }
 

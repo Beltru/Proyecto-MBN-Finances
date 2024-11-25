@@ -70,6 +70,8 @@ const createMovement = async (userId, fecha, categoria, monto, descripcion) => {
     const client = new Client(config);
     await client.connect();
     
+    console.log("userId: " + userId + "fecha: "+ fecha + "categoria: "+categoria + "monto: "+monto + "descripcion: "+descripcion);
+
     try{
         const {rows} = await client.query(
             "INSERT INTO movimientos_financieros (id_usuario, fecha, categoria, monto, descripcion) VALUES ($1, $2, $3, $4, $5)", 

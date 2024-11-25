@@ -79,7 +79,8 @@ const createMovement = async (req, res) => {
         "Ropa y calzado",
         "Educación",
         "Entretenimiento",
-        "Tecnología"
+        "Tecnología",
+        "Otros"
     ];
     
     if (!PosibleCategories.includes(categoria)) {
@@ -100,6 +101,16 @@ const createMovement = async (req, res) => {
     }
 };
 
+function convertirFecha(fecha) {
+    // Dividimos la fecha usando el separador "/"
+    const partes = fecha.split("/");
+
+    // Reorganizamos las partes al formato YYYY/MM/DD
+    const fechaConvertida = `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+    return fechaConvertida;
+}
+
 const uploadMovements = async (req, res) => {
     const userId = req.id;
     
@@ -116,19 +127,61 @@ const uploadMovements = async (req, res) => {
 
         // Recorre cada fila y muestra su contenido
         filas.forEach((fila, index) => {
-            console.log(`Fila ${index + 1}: ${fila}`);
+            if (index > 0 && index < filas.length-2)
+            {
+                //console.log("hola");
+                const campos = fila.split(';');
 
-            // Dividir la fila en campos usando el delimitador ";"
-            const campos = fila.split(';');
+                const fecha = convertirFecha(campos[0]);
+                const categoria = "Vivienda";
+                const monto = parseInt(campos[3].replace('.', '').replace(',', '.'), 10);
+                
+                const descripcion = campos[1];
 
-            // console.log(`Fila ${index + 1}:`);
-            campos.forEach((campo, i) => {
-                console.log(`  Campo ${i + 1}: ${campo}`);
-            });            
+                if (!userId){
+                    return res.status(400).json({message: "Se necesita un userId"}); }
+            
+                if (!fecha){
+                    return res.status(400).json({message: "Se necesita fecha"}); }
+                
+                if (!categoria){
+                    return res.status(400).json({message: "Se necesita una categoria"}); }
+                
+                const PosibleCategories = 
+                [
+                    "Vivienda",
+                    "Transporte",
+                    "Alimentación",
+                    "Salud y bienestar",
+                    "Ropa y calzado",
+                    "Educación",
+                    "Entretenimiento",
+                    "Tecnología",
+                    "Otros"
+                ];
+                
+                if (!PosibleCategories.includes(categoria)) {
+                    return res.status(400).json({message: "Se necesita Ingresar una categoria Valida"});
+                }
+                
+                if (!monto){
+                    return res.status(400).json({message: "Se necesita un monto"}); }
+            
+                if (!descripcion){
+                    return res.status(400).json({message: "Se necesita una descripcion"}); }
+                
+                //console.log("userId: " + userId + "fecha: "+ fecha + "categoria: "+categoria + "monto: "+monto + "descripcion: "+descripcion);
+                try{
+                    //console.log("userId: " + userId + "fecha: "+ fecha + "categoria: "+categoria + "monto: "+monto + "descripcion: "+descripcion);
+                    movementService.createMovement(userId, fecha, categoria, monto, descripcion);
+                } catch(error){
+                    res.status(500).json({message: "Error al crear el Movmiento", error});
+                }
+            }
         });
 
         // Envía una respuesta indicando que se recibió correctamente el archivo
-        res.status(200).send('Archivo CSV recibido correctamente');
+        res.status(200).send('Los movimientos fueron creados exitosamente');
     } catch (error) {
         console.error(error);
         res.status(500).send('Hubo un problema al procesar el archivo CSV');

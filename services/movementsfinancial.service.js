@@ -27,7 +27,7 @@ const getMonthlyIncomes = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY mes ORDER BY mes;",
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY mes ORDER BY mes;",
             [userId]
         );
 
@@ -45,7 +45,7 @@ const getMonthlyExpenses = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY mes ORDER BY mes;",
+            "SELECT DATE_TRUNC('month', fecha) AS mes, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY mes ORDER BY mes;",
             [userId]
         );
 
@@ -81,7 +81,7 @@ const getDailyIncomes = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY dia ORDER BY dia;",
+            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY dia ORDER BY dia;",
             [userId]
         );
 
@@ -99,7 +99,7 @@ const getDailyExpenses = async (userId) => {
 
     try {
         const { rows } = await client.query(
-            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 GROUP BY dia ORDER BY dia;",
+            "SELECT DATE_TRUNC('day', fecha) AS dia, SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 GROUP BY dia ORDER BY dia;",
             [userId]
         );
 
