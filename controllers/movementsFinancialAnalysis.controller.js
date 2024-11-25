@@ -55,7 +55,7 @@ const getBalanceByDate = async (req, res) => {
 const getIncomesByMonth = async (req, res) => {
     const { userId } = req.params;
     const { month } = req.query; // Se asume que el mes se pasa como parámetro de consulta
-
+    console.log(month);
     try {
         const MonthIncomes = await MovementsFinancialAnalysisService.getIncomesByMonth(userId, month);
         res.json({ MonthIncomes });
@@ -67,7 +67,7 @@ const getIncomesByMonth = async (req, res) => {
 const getExpensesByMonth = async (req, res) => {
     const { userId } = req.params;
     const { month } = req.query;
-
+    //console.log(month);
     try {
         const MonthExpenses = await MovementsFinancialAnalysisService.getExpensesByMonth(userId, month);
         res.json({ MonthExpenses });

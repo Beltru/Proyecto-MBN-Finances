@@ -9,7 +9,7 @@ const getIncomesByDate = async (userId, date) => {
     //console.log(date);
     try {
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 AND DATE(fecha) = $2;",            
+            "SELECT SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 AND fecha = $2::DATE;",            
             [userId, date]
         );
 
@@ -25,13 +25,14 @@ const getIncomesByDate = async (userId, date) => {
 const getExpensesByDate = async (userId, date) => {
     const client = new Client(config);
     await client.connect();
-
+    console.log(date);
     try {
+        
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 AND DATE(fecha) = $2;",            
+            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 AND fecha = $2::DATE;",            
             [userId, date]
         );
-
+        
         await client.end();
         return rows[0].total_egreso || 0; // Retorna 0 si no hay egresos
     } catch (error) {
@@ -53,9 +54,10 @@ const getIncomesByMonth = async (userId, month) => {
     await client.connect();
 
     try {
+        console.log(month)
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto < 0 AND DATE_TRUNC('month', fecha) = $2",
-            [userId, month]
+            "SELECT SUM(monto) AS total_ingreso FROM movimientos_financieros WHERE id_usuario = $2 AND monto < 0 AND EXTRACT(MONTH FROM fecha) = EXTRACT(MONTH FROM $1::DATE) AND EXTRACT(YEAR FROM fecha) = EXTRACT(YEAR FROM $1::DATE)",
+            [month, userId]
         );
 
         await client.end();
@@ -70,12 +72,13 @@ const getIncomesByMonth = async (userId, month) => {
 const getExpensesByMonth = async (userId, month) => {
     const client = new Client(config);
     await client.connect();
-
     try {
         const { rows } = await client.query(
-            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $1 AND monto > 0 AND DATE_TRUNC('month', fecha) = $2",
-            [userId, month]
+            "SELECT SUM(monto) AS total_egreso FROM movimientos_financieros WHERE id_usuario = $2 AND monto > 0 AND EXTRACT(MONTH FROM fecha) = EXTRACT(MONTH FROM $1::DATE) AND EXTRACT(YEAR FROM fecha) = EXTRACT(YEAR FROM $1::DATE)",
+            [month, userId]
         );
+        
+        
 
         await client.end();
         return rows[0].total_egreso || 0; // Retorna 0 si no hay egresos
