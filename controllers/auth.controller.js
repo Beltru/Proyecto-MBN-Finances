@@ -3,15 +3,20 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
-    const usuario = req.body;
-    const password = req.body.password;
-    const email = req.body.email;
+    const { nombre, email, password } = req.body;
+    let apellido = "hola"
+    let usuario = {
+        nombre,
+        email,
+        apellido,
+        password
+    }
     const saltRounds = 10;
     
-    if (!usuario)
-        return res.status(400).json({ message: "Se requiere un usuario." });
+   if (!usuario)
+        return res.status(400).json({ message: "Se requiere un usuario." }); 
 
-    if (!usuario.nombre || !usuario.apellido || !usuario.email || !usuario.password)
+    if (!nombre || !email || !password)
         return res.status(400).json({ message: "Todos los campos deben de encontrase llenos." });
 
     try {
