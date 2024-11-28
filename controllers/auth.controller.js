@@ -94,6 +94,8 @@ const getUserByEmail = async (req, res) => {
         res.status(500).json({ message: "Error al obtener los datos del usuario." });
     }
 };
+
+
 const updateUserByEmail = async (req, res) => {
     const { email } = req.params; 
     const { nombre, apellido } = req.body;
@@ -119,19 +121,5 @@ const updateUserByEmail = async (req, res) => {
     }
 };
 
-const updateUsuario = async (email, updatedData) => {
-    const { nombre, apellido } = updatedData;
 
-    console.log("Datos a actualizar:", { email, nombre, apellido }); // Verificar valores
-    const query = `
-        UPDATE usuarios 
-        SET nombre = $1, apellido = $2 
-        WHERE email = $3
-    `;
-    await db.query(query, [nombre, apellido, email]);
-};
-
-
-
-
-export default { register, login, getUserByEmail, updateUserByEmail, updateUsuario };
+export default { register, login, getUserByEmail, updateUserByEmail };

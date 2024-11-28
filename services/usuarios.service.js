@@ -56,4 +56,21 @@ const createUsuario = async (usuario) => {
     }
 };
 
-export default { getUsuarioByEmail, getUsuarioById, createUsuario };
+const updateUsuario = async (email, updatedData) => {
+    const client = new Client(config);
+    await client.connect();
+    const { nombre, apellido } = updatedData;
+
+    try{
+        console.log("Datos a actualizar:", { email, nombre, apellido }); // Verificar valores
+        const { rows } = await client.query("UPDATE usuarios SET nombre = $1, apellido = $2 WHERE email = $3", [nombre, apellido, email])
+        await client.end();
+        return rows;
+    } catch (error) {
+        await client.end();
+        throw error
+    }
+};
+
+
+export default { getUsuarioByEmail, getUsuarioById, createUsuario, updateUsuario };
