@@ -22,7 +22,7 @@ const getMovements = async (req, res) => {
 
 //Devuelve todos los movimientos financieros de un usuario
 const getMovementsByUser = async (req, res) => {
-    const userId = req.id;
+    const userId = req.userId;
 
     if (!userId) {
         return res.status(400).json({message: "Se requiere userId"}); }
