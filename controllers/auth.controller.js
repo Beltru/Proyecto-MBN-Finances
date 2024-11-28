@@ -3,15 +3,20 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
-    const usuario = req.body;
-    const password = req.body.password;
-    const email = req.body.email;
+    const { nombre, email, password } = req.body;
+    let apellido = "hola"
+    let usuario = {
+        nombre,
+        email,
+        apellido,
+        password
+    }
     const saltRounds = 10;
     
-    if (!usuario)
-        return res.status(400).json({ message: "Se requiere un usuario." });
+   if (!usuario)
+        return res.status(400).json({ message: "Se requiere un usuario." }); 
 
-    if (!usuario.nombre || !usuario.apellido || !usuario.email || !usuario.password)
+    if (!nombre || !email || !password)
         return res.status(400).json({ message: "Todos los campos deben de encontrase llenos." });
 
     try {
@@ -68,4 +73,27 @@ const login = async (req, res) => {
     }
 };
 
-export default { register, login };
+const getUserByEmail = async (req, res) => {
+    const { email } = req.params; // Tomamos el email de los parámetros de la URL
+
+    if (!email) {
+        return res.status(400).json({ message: "El email del usuario es obligatorio." });
+    }
+
+    try {
+        const usuario = await UsuariosService.getUsuarioByEmail(email); // Asegúrate de tener este método en tu servicio
+
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+
+        const { id, nombre, apellido, email: userEmail, admin } = usuario;
+        res.status(200).json({ id, nombre, apellido, email: userEmail, admin });
+    } catch (error) {
+        console.error("Error al obtener usuario:", error);
+        res.status(500).json({ message: "Error al obtener los datos del usuario." });
+    }
+};
+
+
+export default { register, login, getUserByEmail };
