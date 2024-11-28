@@ -94,6 +94,44 @@ const getUserByEmail = async (req, res) => {
         res.status(500).json({ message: "Error al obtener los datos del usuario." });
     }
 };
+const updateUserByEmail = async (req, res) => {
+    const { email } = req.params; 
+    const { nombre, apellido } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: "El email del usuario es obligatorio." });
+    }
+
+    try {
+        const usuarioExistente = await UsuariosService.getUsuarioByEmail(email);
+
+        if (!usuarioExistente) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+
+        // Actualizar usuario
+        await UsuariosService.updateUsuario(email, { nombre, apellido });
+
+        res.status(200).json({ message: "Usuario actualizado con éxito." });
+    } catch (error) {
+        console.error("Error al actualizar usuario:", error); // Agregar log del error
+        res.status(500).json({ message: "Error al actualizar los datos del usuario." });
+    }
+};
+
+const updateUsuario = async (email, updatedData) => {
+    const { nombre, apellido } = updatedData;
+
+    console.log("Datos a actualizar:", { email, nombre, apellido }); // Verificar valores
+    const query = `
+        UPDATE usuarios 
+        SET nombre = $1, apellido = $2 
+        WHERE email = $3
+    `;
+    await db.query(query, [nombre, apellido, email]);
+};
 
 
-export default { register, login, getUserByEmail };
+
+
+export default { register, login, getUserByEmail, updateUserByEmail, updateUsuario };

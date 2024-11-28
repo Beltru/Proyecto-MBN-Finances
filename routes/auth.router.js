@@ -7,6 +7,7 @@ const router = Router();
 router.post("/register", AuthController.register); //Registro
 router.post("/login", AuthController.login); //Login
 router.get("/user/email/:email", AuthController.getUserByEmail);
+router.put("/user/email/:email", AuthController.updateUserByEmail);
 
 export default router;
 
